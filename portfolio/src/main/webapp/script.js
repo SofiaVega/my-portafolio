@@ -11,18 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+function addRandomFact(){
+  const facts=['I joined Google during the Covid crisis', 
+  'Most people call me Sofi!', 
+  'My favorite non fiction book is The Code Book, by Simon Singh',
+  'I’m 1.5 meters tall.',
+  'I have two younger brothers'];
+  const fact =facts[Math.floor(Math.random() * facts.length)];
+  const factContainer = document.getElementById('fact-container');
+  factContainer.innerText = fact;
 }

@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 /**
- * Adds a random greeting to the page.
+ * Adds a random fact to the page.
+ * This is just a modification from random greeting
  */
 function addRandomFact(){
   const facts=['I joined Google during the Covid crisis', 

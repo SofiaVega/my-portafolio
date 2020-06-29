@@ -17,11 +17,11 @@
  */
 function addRandomFact() {
   const facts = [
-    'I joined Google during the Covid crisis', 
-    'Most people call me Sofi!', 
+    'I joined Google during the Covid crisis',
+    'Most people call me Sofi!',
     'My favorite non fiction book is The Code Book, by Simon Singh',
     'I\'m 1.5 meters tall.',
-    'I have two younger brothers'
+    'I have two younger brothers',
   ];
   const fact = facts[Math.floor(Math.random() * facts.length)];
   const factContainer = document.getElementById('fact-container');

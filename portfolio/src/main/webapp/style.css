@@ -1,9 +1,63 @@
 #content {
+  font-family: 'Courier New', Courier, monospace;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 30;
   width: 650px;
 }
 
-#greeting-container {
-  margin-top: 20px;
+#short-info {
+  color: gray;
+  margin-top: 15px;
+}
+
+#my-photo {
+  display: block;
+  height: auto;
+  max-height: 400px;
+  margin-left: -15%;
+  margin-top: -25%;
+  max-width: 400px;
+  width: auto;
+}
+
+/* Add extra space to short-info and languages*/
+span {
+  margin: 15px;
+  margin-left: 0px;
+}
+
+/* Set size for icons */
+img {
+  height: 32px;
+  margin: 15px;
+  width: 32px;
+}
+
+/* Crops first image into a circle */
+#crop-circle {
+  border-radius: 50%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  width: 200px;
+}
+
+/* 
+ * Shows a gray line to the left of 'Favorite proyects' 
+ * and 'Other proyects' sections 
+ */
+#line {
+  border-left: solid lightgray;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+h1 {
+  margin-top: 40px;
+}
+
+/* Removes underscore between icons*/
+a{
+  text-decoration: none;
 }

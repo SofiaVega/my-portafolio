@@ -27,3 +27,22 @@ function addRandomFact() {
   const factContainer = document.getElementById('fact-container');
   factContainer.innerText = fact;
 }
+
+function getGreeting() {
+  // Passes the response into handleResponse() once request is complete
+  const responsePromise = fetch('/data');
+  responsePromise.then(handleResponse);
+}
+
+function handleResponse(response) {
+  // Converts response to text and passes the result into addQuoteToDom
+  const textPromise = response.text();
+  textPromise.then(addGreetingToDom);
+}
+
+/** Adds a random quote to the DOM. */
+function addGreetingToDom(greeting) {
+
+  const greetingContainer = document.getElementById('greeting');
+  greetingContainer.innerText = greeting;
+}

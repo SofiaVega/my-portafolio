@@ -45,3 +45,20 @@ function addGreetingToDom(greeting) {
   const greetingContainer = document.getElementById('greeting');
   greetingContainer.innerText = greeting;
 }
+
+/** Adds 3 first comments to the 'greetings' division. */
+function getJson() {
+  fetch('/data').then(response => response.json()).then((greeting) => {
+    const containerElement=document.getElementById('greeting');
+    containerElement.appendChild(createParagraphElement(greeting[0]));
+    containerElement.appendChild(createParagraphElement(greeting[1]));
+    containerElement.appendChild(createParagraphElement(greeting[2]));
+  });
+}
+
+/** Creates a new paragraph element in document */
+function createParagraphElement(text) {
+  const pElement = document.createElement('P');
+  pElement.innerText = text;
+  return pElement;
+}

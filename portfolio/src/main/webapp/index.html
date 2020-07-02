@@ -7,12 +7,10 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <!-- getJson() fetches comments from DataServlet -->
+  <body onload="getJson()">
     <div id="content">
       <div>
-        <!-- Calls for a messages in DataServlet -->
-        <button onclick="getJson()">Start</button>
-        <div id="greeting"></div>
         <h1>Sofia Vega</h1>
         <div>
           <!-- Shows a picture of me -->
@@ -115,6 +113,9 @@
         <button onclick="addRandomFact()">Go!</button>
         <div id="fact-container">
         </div>
+        <h4>Comments:</h4>
+        <!-- Shows messages in DataServlet -->
+        <div id="comments"></div>
       </div>
     </div>
   </body>

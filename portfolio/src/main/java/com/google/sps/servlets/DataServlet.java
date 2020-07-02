@@ -29,18 +29,18 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
   @Override
   public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-    ArrayList<String> greetings = new ArrayList<String>();
-    greetings.add("Good morning!");
-    greetings.add("Good evening!");
-    greetings.add("Good night!");
-    String json = convertToJson(greetings);
+    ArrayList<String> comments = new ArrayList<String>();
+    comments.add("Good morning!");
+    comments.add("Good evening!");
+    comments.add("Good night!");
+    String json = convertToJson(comments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
-  private String convertToJson(ArrayList<String> greetings) {
+  private String convertToJson(ArrayList<String> comments) {
     Gson gson = new Gson();
-    String json = gson.toJson(greetings);
+    String json = gson.toJson(comments);
     return json;
   }
 }

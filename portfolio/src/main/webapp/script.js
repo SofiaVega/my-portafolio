@@ -46,13 +46,13 @@ function addGreetingToDom(greeting) {
   greetingContainer.innerText = greeting;
 }
 
-/** Adds 3 first comments to the 'greetings' division. */
+/** Adds 3 first comments to the 'comments' division. */
 function getJson() {
-  fetch('/data').then(response => response.json()).then((greeting) => {
-    const containerElement=document.getElementById('greeting');
-    containerElement.appendChild(createParagraphElement(greeting[0]));
-    containerElement.appendChild(createParagraphElement(greeting[1]));
-    containerElement.appendChild(createParagraphElement(greeting[2]));
+  fetch('/data').then(response => response.json()).then((comment) => {
+    const containerElement=document.getElementById('comments');
+    containerElement.appendChild(createParagraphElement(comment[0]));
+    containerElement.appendChild(createParagraphElement(comment[1]));
+    containerElement.appendChild(createParagraphElement(comment[2]));
   });
 }
 

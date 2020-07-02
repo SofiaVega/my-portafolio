@@ -69,3 +69,8 @@ button{
   color: white;
   padding: 15px;
 }
+
+#comments{
+  padding: 20px;
+  color: gray;
+}

@@ -27,15 +27,23 @@ import javax.servlet.http.HttpServletResponse;
 /** Returns an array of comments in JSON form */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+
+  ArrayList<String> comments = new ArrayList<String>();
+
+  /* Returns an array of comments in JSON */
   @Override
   public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-    ArrayList<String> comments = new ArrayList<String>();
-    comments.add("Good morning!");
-    comments.add("Good evening!");
-    comments.add("Good night!");
     String json = convertToJson(comments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
+    
+  }
+
+  /* Adds the comment from the 'new-comment' form to the array */
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    String comment = request.getParameter("new-comment");
+    comments.add(comment);
+    response.sendRedirect("/index.html");
   }
 
   private String convertToJson(ArrayList<String> comments) {

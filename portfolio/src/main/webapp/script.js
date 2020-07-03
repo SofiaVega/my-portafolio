@@ -50,9 +50,10 @@ function addGreetingToDom(greeting) {
 function getJson() {
   fetch('/data').then(response => response.json()).then((comment) => {
     const containerElement=document.getElementById('comments');
-    containerElement.appendChild(createParagraphElement(comment[0]));
-    containerElement.appendChild(createParagraphElement(comment[1]));
-    containerElement.appendChild(createParagraphElement(comment[2]));
+    let i;
+    for (i=0; i<comment.length; i++) {
+      containerElement.appendChild(createParagraphElement(comment[i]));
+    }
   });
 }
 

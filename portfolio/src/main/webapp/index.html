@@ -116,6 +116,13 @@
         <h4>Comments:</h4>
         <!-- Shows messages in DataServlet -->
         <div id="comments"></div>
+        <h5>Add Comment</h5>
+        <!-- Submits new comments to the servlet -->
+        <form action="/data" method="POST">
+          <textarea name="new-comment" placeholder="Say hi!" rows="4" cols="50"></textarea>
+          <br></br>
+          <input type="submit">
+        </form>
       </div>
     </div>
   </body>

@@ -46,7 +46,7 @@ function addGreetingToDom(greeting) {
   greetingContainer.innerText = greeting;
 }
 
-/** Adds 3 first comments to the 'comments' division. */
+/** Adds all comments to the 'comments' division. */
 function getJson() {
   fetch('/data').then(response => response.json()).then((comment) => {
     const containerElement=document.getElementById('comments');

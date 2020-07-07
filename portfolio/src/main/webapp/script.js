@@ -49,13 +49,14 @@ function addGreetingToDom(greeting) {
   greetingContainer.innerText = greeting;
 }
 
-/** Adds all comments to the 'comments' division. */
+/** Adds all comments and usernames to the 'comments' division. */
 function getJson() {
   fetch('/data').then(response => response.json()).then((comment) => {
     const containerElement=document.getElementById('comments');
     let i;
     for (i=0; i<comment.length; i++) {
-      containerElement.appendChild(createParagraphElement(comment[i]));
+      containerElement.appendChild(createSpanElement(comment[i][0]));
+      containerElement.appendChild(createParagraphElement(comment[i][1]));
     }
   });
 }
@@ -65,4 +66,11 @@ function createParagraphElement(text) {
   const pElement = document.createElement('P');
   pElement.innerText = text;
   return pElement;
+}
+
+/**Creates a new span element in document */
+function createSpanElement(text) {
+  const spanElement = document.createElement('span');
+  spanElement.innerText = text;
+  return spanElement;
 }

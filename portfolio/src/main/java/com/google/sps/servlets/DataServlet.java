@@ -39,11 +39,12 @@ public class DataServlet extends HttpServlet {
   public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
-    ArrayList<String> comments = new ArrayList<String>();
+    ArrayList<String[]> comments = new ArrayList<String[]>();
     int index=0;
     for (Entity entity : results.asIterable()) {
       if(index<maxComments){
-        comments.add( (String) entity.getProperty("text"));
+        String[] str ={(String) entity.getProperty("username"),(String) entity.getProperty("text")};
+        comments.add(str);
       }
       index++;
     }
@@ -53,9 +54,11 @@ public class DataServlet extends HttpServlet {
     
   }
 
-  /* Adds the comment from the 'new-comment' form to the array 
-   * Modifies number of comments to return */
+  /* Adds the comment and username from the 'new-comment' and 'username' 
+   * form to the array, modifies the numberr of comments to return 
+   */
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    String username = request.getParameter("username");
     String comment = request.getParameter("new-comment");
     String max = request.getParameter("max");
     if(max!=null){
@@ -68,21 +71,22 @@ public class DataServlet extends HttpServlet {
       }
     }
     if(comment!=null){
-      storeComment(comment);
+      storeComment(username, comment);
     }
     response.sendRedirect("/index.html");
   }
 
-  /* Converts the comments string to json using gson */
-  private String convertToJson(ArrayList<String> comments) {
+  /* Converts the comments Array to json using gson */
+  private String convertToJson(ArrayList<String[]> comments) {
     Gson gson = new Gson();
     String json = gson.toJson(comments);
     return json;
   }
 
   /* Creates and stores new comment entities */
-  public void storeComment(String text){
+  public void storeComment(String username, String text){
     Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("username", username);
     commentEntity.setProperty("text", text);
     commentEntity.setProperty("timestamp", System.currentTimeMillis());
     datastore.put(commentEntity);

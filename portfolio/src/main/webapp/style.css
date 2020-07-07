@@ -78,10 +78,11 @@ button{
 textarea{
   outline: none;
   border-color: gray;
+  width: 50em;
 }
 
 /* Style 'Submit' button*/
-input {
+input[type='submit'] {
   margin-right: 15px;
   padding: 15px;
   border: none;
@@ -91,17 +92,33 @@ input {
   font-family: 'Courier New', Courier, monospace;
 }
 
+input[type='text'] {
+  outline: none;
+  border-color: solid gray;
+  color: gray;
+  width: 50em;
+}
+
+input[type='number']{
+  padding: 13px;
+}
+
 input:hover button:hover {
   color: black;
   background-color: yellow;
 }
 
-/* Styles all comments in 'comments' div */
-#comments > * {
-  border: solid lightgray;
+/* Styles text and usernames in 'comments' div */
+#comments p {
   padding: 15px;
-  margin: 15px;
+  margin-bottom: 15px;
   height: 50px;
+  border: solid lightgray
+}
+
+#comments span{
+  padding-bottom: 0px;
+  margin-top: 15px;
 }
 
 #delete-button {

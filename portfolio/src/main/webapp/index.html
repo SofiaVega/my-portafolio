@@ -116,6 +116,12 @@
         <h4>Comments:</h4>
         <!-- Shows messages in DataServlet -->
         <div id="comments"></div>
+        <!-- Updates the number of comments displayed -->
+        <form id="number-form" action="/data" method="POST">
+          <input type="number" name="max" min="0" max="10" step="1" value="3" onchange="this.form.submit()">
+        </form>
+        <!-- Deletes all comments and reloads the page -->
+        <button onclick="deleteAllComments()" id="delete-button">Delete all comments</button>
         <h5>Add Comment</h5>
         <!-- Submits new comments to the servlet -->
         <form action="/data" method="POST">
@@ -123,7 +129,7 @@
           <br></br>
           <input type="submit">
         </form>
-      </div>
+        </div>
     </div>
   </body>
 </html>

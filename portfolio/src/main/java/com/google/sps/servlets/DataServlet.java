@@ -28,19 +28,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
 /** Returns an array of comments in JSON form */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  int maxComments=3;
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  /* Returns an array of comments in JSON */
+  /* Returns an array of comments in JSON 
+   * Size of array is maxComments */
   @Override
   public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments = new ArrayList<String>();
+    int index=0;
     for (Entity entity : results.asIterable()) {
-      comments.add( (String) entity.getProperty("text"));
+      if(index<maxComments){
+        comments.add( (String) entity.getProperty("text"));
+      }
+      index++;
     }
     String json = convertToJson(comments);
     response.setContentType("application/json;");
@@ -48,10 +53,23 @@ public class DataServlet extends HttpServlet {
     
   }
 
-  /* Adds the comment from the 'new-comment' form to the array */
+  /* Adds the comment from the 'new-comment' form to the array 
+   * Modifies number of comments to return */
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
     String comment = request.getParameter("new-comment");
-    storeComment(comment);
+    String max = request.getParameter("max");
+    if(max!=null){
+      try {
+        maxComments = Integer.parseInt(max);
+      }
+      catch (NumberFormatException e)
+      {
+        //maxComments = 3;
+      }
+    }
+    if(comment!=null){
+      storeComment(comment);
+    }
     response.sendRedirect("/index.html");
   }
 

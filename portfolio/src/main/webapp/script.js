@@ -33,7 +33,10 @@ function getGreeting() {
   const responsePromise = fetch('/data');
   responsePromise.then(handleResponse);
 }
-
+/** Calls for  */
+function deleteAllComments() {
+  fetch('/delete-data', {method: 'POST'} ).then(window.location.reload());
+}
 /** Converts response to text and passes the result into addGreetingToDom */
 function handleResponse(response) {
   const textPromise = response.text();

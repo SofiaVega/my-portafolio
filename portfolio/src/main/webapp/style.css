@@ -71,31 +71,31 @@ button{
 }
 
 #comments{
-  padding: 20px;
   color: gray;
+  padding: 20px;
 }
 
 textarea{
-  outline: none;
   border-color: gray;
+  outline: none;
   width: 50em;
 }
 
 /* Style 'Submit' button*/
 input[type='submit'] {
+  background-color: lightskyblue;
+  border: none;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
   margin-right: 15px;
   padding: 15px;
-  border: none;
-  background-color: lightskyblue;
-  color: white;
   text-transform: uppercase;
-  font-family: 'Courier New', Courier, monospace;
 }
 
 input[type='text'] {
-  outline: none;
   border-color: solid gray;
   color: gray;
+  outline: none;
   width: 50em;
 }
 
@@ -104,21 +104,21 @@ input[type='number']{
 }
 
 input:hover button:hover {
-  color: black;
   background-color: yellow;
+  color: black;
 }
 
 /* Styles text and usernames in 'comments' div */
 #comments p {
-  padding: 15px;
-  margin-bottom: 15px;
+  border: solid lightgray;
   height: 50px;
-  border: solid lightgray
+  margin-bottom: 15px;
+  padding: 15px;
 }
 
 #comments span{
-  padding-bottom: 0px;
   margin-top: 15px;
+  padding-bottom: 0px;
 }
 
 #delete-button {
@@ -127,4 +127,13 @@ input:hover button:hover {
 
 #number-form {
   display: inline;
+}
+
+/* Styles <a> login/logout element to look like a button */
+#login-button{
+  background-color: lightskyblue;
+  border: none;
+  color: white;
+  padding: 15px;
+  margin-bottom: 15px;
 }

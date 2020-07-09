@@ -28,29 +28,13 @@ function addRandomFact() {
   factContainer.innerText = fact;
 }
 
-/** Passes the response into handleResponse() once request is complete */
-function getGreeting() {
-  const responsePromise = fetch('/data');
-  responsePromise.then(handleResponse);
-}
-/** Calls for  */
+/** Calls for DeleteCommentsServer, then reloads the window */
 function deleteAllComments() {
   fetch('/delete-data', {method: 'POST'} ).then(window.location.reload());
 }
-/** Converts response to text and passes the result into addGreetingToDom */
-function handleResponse(response) {
-  const textPromise = response.text();
-  textPromise.then(addGreetingToDom);
-}
-
-/** Adds a random quote to the DOM. */
-function addGreetingToDom(greeting) {
-  const greetingContainer = document.getElementById('greeting');
-  greetingContainer.innerText = greeting;
-}
 
 /** Adds all comments and usernames to the 'comments' division. */
-function getJson() {
+function getCommentsJson() {
   fetch('/data').then(response => response.json()).then((comment) => {
     const containerElement=document.getElementById('comments');
     let i;
@@ -61,16 +45,61 @@ function getJson() {
   });
 }
 
-/** Creates a new paragraph element in document */
+/**
+ * Creates a new paragraph element in document
+ * @param {string} text Inner text for the new element
+ * @return {pElement} The new <p> element
+ */
 function createParagraphElement(text) {
   const pElement = document.createElement('P');
   pElement.innerText = text;
   return pElement;
 }
 
-/**Creates a new span element in document */
+/**
+ * Creates a new span element in document
+ * @param {string} text Inner text for the new element
+ * @return {spanElement} The new <span> element
+ */
 function createSpanElement(text) {
   const spanElement = document.createElement('span');
   spanElement.innerText = text;
   return spanElement;
+}
+
+/** Fetches Json with the login/logout URL*/
+function getLoginJson() {
+  fetch('/login').then(response => response.json()).then((logJson) => {
+    createLogButton(logJson);
+  });
+}
+
+/**
+ * Creates login/logout button, hides comment-form if user is logged out
+ * @param {json} logJson Json fetched from LoginServlet
+ */
+function createLogButton(logJson) {
+  const containerElement = document.getElementById('login');
+  const commentForm = document.getElementById('comment-form');
+  const loginlink = document.createElement('a');
+  const add = document.getElementById('add');
+
+  if (logJson.logged == 'out') {
+    commentForm.style.display = 'none';
+    loginlink.innerText = 'Click here to log in';
+    add.innerText = 'Log in to add a comment!';
+  } else {
+    commentForm.style.display = 'block';
+    loginlink.innerText = 'Click here to log out';
+  }
+
+  loginlink.id = 'login-button';
+  loginlink.href = logJson.url;
+  containerElement.appendChild(loginlink);
+}
+
+/** Gets latest comments and login/logout button when index.html loads*/
+function start() {
+  getCommentsJson();
+  getLoginJson();
 }

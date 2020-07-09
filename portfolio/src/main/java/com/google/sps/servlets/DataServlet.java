@@ -21,8 +21,11 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.lang.Iterable;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,64 +34,62 @@ import javax.servlet.http.HttpServletResponse;
 /** Returns an array of comments in JSON form */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  int maxComments=3;
+  private int numComments = 3;
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  /* Returns an array of comments in JSON 
-   * Size of array is maxComments */
+
+  /** Returns an array of comments in JSON of size numComments */
   @Override
   public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-    PreparedQuery results = datastore.prepare(query);
-    ArrayList<String[]> comments = new ArrayList<String[]>();
-    int index=0;
-    for (Entity entity : results.asIterable()) {
-      if(index<maxComments){
-        String[] str ={(String) entity.getProperty("username"),(String) entity.getProperty("text")};
-        comments.add(str);
-      }
-      index++;
-    }
+    ArrayList<String[]> comments = getComments();
     String json = convertToJson(comments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
-    
   }
 
-  /* Adds the comment and username from the 'new-comment' and 'username' 
-   * form to the array, modifies the numberr of comments to return 
+  /** 
+   * Adds the comment and username from the 'new-comment' and 'username' 
+   * form to the array, modifies the number of comments to return 
    */
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
     String username = request.getParameter("username");
     String comment = request.getParameter("new-comment");
-    String max = request.getParameter("max");
-    if(max!=null){
-      try {
-        maxComments = Integer.parseInt(max);
-      }
-      catch (NumberFormatException e)
-      {
-        //maxComments = 3;
-      }
+    String inputNumber = request.getParameter("input-number");
+    if (inputNumber != null) {
+      numComments = Integer.parseInt(inputNumber);
     }
-    if(comment!=null){
+    if (comment != null) {
       storeComment(username, comment);
     }
     response.sendRedirect("/index.html");
   }
 
-  /* Converts the comments Array to json using gson */
+  /** Converts the comments Array to json using gson */
   private String convertToJson(ArrayList<String[]> comments) {
     Gson gson = new Gson();
     String json = gson.toJson(comments);
     return json;
   }
 
-  /* Creates and stores new comment entities */
-  public void storeComment(String username, String text){
+  /** Creates and stores new comment entities */
+  private void storeComment(String username, String text){
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("username", username);
     commentEntity.setProperty("text", text);
     commentEntity.setProperty("timestamp", System.currentTimeMillis());
     datastore.put(commentEntity);
   }
+
+  /**Retrieves all comment entities from datastore and returns an array of length numComments */
+  private ArrayList<String[]> getComments(){
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+    ArrayList<String[]> comments = new ArrayList<String[]>();
+    Iterable<Entity> commentsIterable = results.asIterable(FetchOptions.Builder.withLimit(numComments));
+    for(Entity comment : commentsIterable){
+      String[] str = {(String) comment.getProperty("username"), (String) comment.getProperty("text")};
+      comments.add(str);
+    }
+    return comments;
+  }
+
 }

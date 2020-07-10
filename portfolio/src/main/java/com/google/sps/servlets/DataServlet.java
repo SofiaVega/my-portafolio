@@ -22,6 +22,8 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +38,13 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
   private int numComments = 3;
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  UserService userService = UserServiceFactory.getUserService();
 
   /** Returns an array of comments in JSON of size numComments */
   @Override
   public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-    ArrayList<String[]> comments = getComments();
-    String json = convertToJson(comments);
+    ArrayList<String> comments = getComments();
+    String json = finalJson(comments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
@@ -54,40 +57,72 @@ public class DataServlet extends HttpServlet {
     String username = request.getParameter("username");
     String comment = request.getParameter("new-comment");
     String inputNumber = request.getParameter("input-number");
+    String email;
+    if(userService.isUserLoggedIn()){
+      email = userService.getCurrentUser().getEmail();
+    } else {
+      email = "null";
+    }
     if (inputNumber != null) {
       numComments = Integer.parseInt(inputNumber);
     }
     if (comment != null) {
-      storeComment(username, comment);
+      storeComment(username, comment, email);
     }
     response.sendRedirect("/index.html");
   }
 
   /** Converts the comments Array to json using gson */
-  private String convertToJson(ArrayList<String[]> comments) {
+  private String convertToJson(ArrayList<String> comments) {
     Gson gson = new Gson();
     String json = gson.toJson(comments);
     return json;
   }
 
+  private String finalJson(ArrayList<String> comments){
+    String json;
+    json = "{ \"array\": [ ";
+    for (int i=0; i< comments.size(); i++){
+      json += comments.get(i);
+      if(i<comments.size()-1){
+        json += ", ";
+      }
+    }
+    json += "] }";
+    return json;
+  }
+
+  private String convertCommentToJson(Entity comment){
+    String json;
+    json = "{ \"username\": \"";
+    json += comment.getProperty("username");
+    json += "\", \"text\": \"";
+    json += comment.getProperty("text");
+    json += "\", \"email\": \"";
+    json += comment.getProperty("email");
+    json += "\" }";
+    return json;
+  }
+
   /** Creates and stores new comment entities */
-  private void storeComment(String username, String text){
+  private void storeComment(String username, String text, String email){
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("username", username);
     commentEntity.setProperty("text", text);
     commentEntity.setProperty("timestamp", System.currentTimeMillis());
+    commentEntity.setProperty("email", email);
     datastore.put(commentEntity);
   }
 
   /**Retrieves all comment entities from datastore and returns an array of length numComments */
-  private ArrayList<String[]> getComments(){
+  private ArrayList<String> getComments(){
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
-    ArrayList<String[]> comments = new ArrayList<String[]>();
+    ArrayList<String> comments = new ArrayList<String>();
     Iterable<Entity> commentsIterable = results.asIterable(FetchOptions.Builder.withLimit(numComments));
     for(Entity comment : commentsIterable){
-      String[] str = {(String) comment.getProperty("username"), (String) comment.getProperty("text")};
-      comments.add(str);
+      String json = convertCommentToJson(comment);
+      comments.add(json);
     }
     return comments;
   }

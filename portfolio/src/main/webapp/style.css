@@ -137,3 +137,7 @@ input:hover button:hover {
   padding: 15px;
   margin-bottom: 15px;
 }
+
+#map {
+  height: 600px;
+}

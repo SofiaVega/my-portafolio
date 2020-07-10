@@ -38,9 +38,10 @@ function getCommentsJson() {
   fetch('/data').then(response => response.json()).then((comment) => {
     const containerElement=document.getElementById('comments');
     let i;
-    for (i=0; i<comment.length; i++) {
-      containerElement.appendChild(createSpanElement(comment[i][0]));
-      containerElement.appendChild(createParagraphElement(comment[i][1]));
+    for (i=0; i<comment.array.length; i++) {
+      containerElement.appendChild(createSpanElement(comment.array[i].username));
+      containerElement.appendChild(createSpanElement(comment.array[i].email));
+      containerElement.appendChild(createParagraphElement(comment.array[i].text));
     }
   });
 }
@@ -102,4 +103,14 @@ function createLogButton(logJson) {
 function start() {
   getCommentsJson();
   getLoginJson();
+  initMap();
+}
+
+let map;
+/** Creates a google maps object in 'map' div */
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 24.8, lng: -107.39},
+    zoom: 8,
+  });
 }

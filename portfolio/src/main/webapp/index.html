@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <!-- start() function calls for getCommentsJSon() and getLoginJson() -->
+  <body onload="start()">
     <div id="content">
       <div>
         <h1>Sofia Vega</h1>
@@ -112,7 +113,27 @@
         <button onclick="addRandomFact()">Go!</button>
         <div id="fact-container">
         </div>
-      </div>
+        <h4>Comments:</h4>
+        <!-- Shows messages in DataServlet -->
+        <div id="comments"></div>
+        <!-- Updates the number of comments displayed -->
+        <form id="number-form" action="/data" method="POST">
+          <input type="number" name="input-number" min="0" max="10" step="1" value="3" onchange="this.form.submit()">
+        </form>
+        <!-- Deletes all comments and reloads the page -->
+        <button onclick="deleteAllComments()" id="delete-button">Delete all comments</button>
+        <h5 id="add">Add Comment</h5>
+        <div id="login"></div>
+        <br></br>
+        <!-- Submits new comments to the servlet -->
+        <form id="comment-form" action="/data" method="POST">
+          <input type="text" name="username" placeholder="Name?" value="Guest">
+          <br></br>
+          <textarea name="new-comment" placeholder="Say hi!" rows="4" cols="50"></textarea>
+          <br></br>
+          <input type="submit">
+        </form>
+        </div>
     </div>
   </body>
 </html>

@@ -106,11 +106,52 @@ function start() {
   initMap();
 }
 
+let editMarker;
 let map;
+
 /** Creates a google maps object in 'map' div */
 function initMap() {
+  let culiacan = {lat: 24.8, lng: -107.39};
   map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 24.8, lng: -107.39},
+    center: culiacan,
     zoom: 8,
+  });
+  let marker = new google.maps.Marker({position: culiacan, map: map});
+  map.addListener('click', (event) => {
+    createMarker(event.latLng.lat(), event.latLng.lng());
+  });
+  fetchMarkers();
+}
+
+/**
+ * Creates a new marker in the map and stores it in the servlet 
+ * @param {number} lat Latitude of the marker
+ * @param {number} lng Longitud of the marker
+ */
+function createMarker(lat, lng) {
+  editMarker = new google.maps.Marker( {position: {lat: lat, lng: lng}, map: map});
+  postMarker(lat, lng);
+}
+
+/**
+ * Sends a post request to the MarkerServlet to store the new marker
+ * @param {number} lat Latitude of the marker
+ * @param {number} lng Longitud of the marker
+ */
+function postMarker(lat, lng) {
+  const params = new URLSearchParams();
+  params.append('lat', lat);
+  params.append('lng', lng);
+
+  fetch('/markers', {method: 'POST', body: params});
+}
+
+/** Fetches all marker entities from the MarkerServlet and creates all markers on the map */
+function fetchMarkers() {
+  fetch('/markers').then(response => response.json()).then((markers) => {
+    let i;
+    for (i=0; i<markers.array.length; i++) {
+      const newMarker = new google.maps.Marker( {position: {lat: markers.array[i].lat, lng: markers.array[i].lng}, map: map});
+    }
   });
 }

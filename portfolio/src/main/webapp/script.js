@@ -124,7 +124,7 @@ function initMap() {
 }
 
 /**
- * Creates a new marker in the map and stores it in the servlet 
+ * Creates a new marker in the map and stores it in the servlet
  * @param {number} lat Latitude of the marker
  * @param {number} lng Longitud of the marker
  */

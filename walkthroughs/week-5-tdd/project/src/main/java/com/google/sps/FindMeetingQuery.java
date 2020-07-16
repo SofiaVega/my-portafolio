@@ -22,7 +22,6 @@ import java.util.List;
 /** Returns a collection of time ranges in which the meeting could fit */
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
     Collection<TimeRange> result = new ArrayList<TimeRange>();
     boolean includeEvent;
     boolean noEventsYet = true;

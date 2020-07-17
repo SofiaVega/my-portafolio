@@ -1,9 +1,139 @@
 #content {
+  font-family: 'Courier New', Courier, monospace;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 30;
   width: 650px;
 }
 
-#greeting-container {
-  margin-top: 20px;
+#short-info {
+  color: gray;
+  margin-top: 15px;
+}
+
+#my-photo {
+  display: block;
+  height: auto;
+  max-height: 400px;
+  margin-left: -15%;
+  margin-top: -25%;
+  max-width: 400px;
+  width: auto;
+}
+
+/* Add extra space to short-info and languages*/
+span {
+  margin: 15px;
+  margin-left: 0px;
+}
+
+/* Set size for icons */
+img {
+  height: 32px;
+  margin: 15px;
+  width: 32px;
+}
+
+/* Crops first image into a circle */
+#crop-circle {
+  border-radius: 50%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  width: 200px;
+}
+
+/* 
+ * Shows a gray line to the left of 'Favorite projects' 
+ * and 'Other proyects' sections 
+ */
+#line {
+  border-left: solid lightgray;
+  margin-bottom: 20px;
+  padding-left: 40px;
+}
+
+h1 {
+  margin-top: 40px;
+}
+
+/* Removes underscore between icons*/
+a{
+  text-decoration: none;
+}
+
+/* Styles both buttons */
+button{
+  background-color: lightskyblue;
+  border: none;
+  color: white;
+  padding: 15px;
+}
+
+#comments{
+  color: gray;
+  padding: 20px;
+}
+
+textarea{
+  border-color: gray;
+  outline: none;
+  width: 50em;
+}
+
+/* Style 'Submit' button*/
+input[type='submit'] {
+  background-color: lightskyblue;
+  border: none;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  margin-right: 15px;
+  padding: 15px;
+  text-transform: uppercase;
+}
+
+input[type='text'] {
+  border-color: solid gray;
+  color: gray;
+  outline: none;
+  width: 50em;
+}
+
+input[type='number']{
+  padding: 13px;
+}
+
+input:hover button:hover {
+  background-color: yellow;
+  color: black;
+}
+
+/* Styles text and usernames in 'comments' div */
+#comments p {
+  border: solid lightgray;
+  height: 50px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+#comments span{
+  margin-top: 15px;
+  padding-bottom: 0px;
+}
+
+#delete-button {
+  display: inline;
+}
+
+#number-form {
+  display: inline;
+}
+
+/* Styles <a> login/logout element to look like a button */
+#login-button{
+  background-color: lightskyblue;
+  border: none;
+  color: white;
+  padding: 15px;
+  margin-bottom: 15px;
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- This file is for my portfolio page -->
 <html>
   <head>
     <meta charset="UTF-8">
@@ -6,13 +7,133 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <!-- start() function calls for getCommentsJSon() and getLoginJson() -->
+  <body onload="start()">
     <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+      <div>
+        <h1>Sofia Vega</h1>
+        <div>
+          <!-- Shows a picture of me -->
+          <div id="crop-circle">
+            <img src="images/foto.jpg" alt="Photo of myself. Hi!" id="my-photo">
+          </div>
+          <div>
+            <!-- This div show icons for my github, linkedin and cv links -->
+            <div id="links">
+              <a href="https://github.com/SofiaVega">
+                <img src="images/github.png" alt="Github logo">
+              </a>
+              <a href="https://www.linkedin.com/in/sofia-vega-765645150/">
+                <img src="images/ln.png" alt="Linkedin logo">
+              </a>
+              <a href="https://drive.google.com/file/d/1IZ7uzrvR5h-p26RDKwslGRcizleu-QLs/view?usp=sharing">
+                <img src="images/cv.png" alt="CV icon">
+              </a>
+            </div>
+          </div>
+        </div>
+        <br>
+        <!-- This is a line with some basic info -->
+        <div id="short-info">
+          <span>STEP Intern</span>
+          <span>CS Student</span>
+          <span>ITESM</span>
+          <span>Culiacan/Monterrey</span>
+        </div>
+        <p>Hello! My name is Sofia and I'm a Computer Science student at 
+          Tec de Monterrey. I’m a part of my major’s student board and enjoy 
+          helping other students develop their skills. In my free time I like 
+          writing short stories and painting.</p>
+        <h1>Programming languages</h1>
+        <div>
+          <!-- This div contains icons for the programming languages I use most -->
+          <img src="images/c++.png" alt="C++">
+          <img src="images/python.png" alt="Python">
+          <img src="images/coffee.png" alt="Java">
+        </div>
+        <h1>Favorite projects</h1>
+        <div id="line">
+          <!-- Three of my favorite projects. -->
+          <!-- TODO(sofiavega): Add icon on img tag -->
+          <div class="projects">
+            <img>
+            <p>Green for Earth</p>
+            <p>A website that calculates the user's carbon footprint, 
+              developed for HackMTY 2019.</p>
+          </div>
+          <br>
+          <div class="projects">
+            <img>
+            <p>COVID-19 Database</p>
+            <p>A school team project where we designed a database 
+              meant to help hospitals manage their COVID-19 patients' data</p>
+          </div>
+          <br>
+          <div class="projects">
+            <img>
+            <p>Bacteria Visual Processing with Python</p>
+            <p>A team project where we analyzed and predicted 
+              bacterial growth through image processing in Python.</p>
+          </div>
+        </div>
+        <h1>Languages</h1>
+        <!-- A line with the languages I've learned -->
+        <!-- Less opacity means less proficiency -->
+        <span>Spanish</span>
+        <span>English</span>
+        <span style="opacity:0.6">German</span>
+        <span style="opacity:0.6">French</span>
+        <span style="opacity:0.3">Korean</span>
+        <h1>Other projects</h1>
+        <div id="line">
+          <!-- This div contains my student group projects -->
+          <!-- TODO(sofiavega): Add icon on img tag -->
+          <div class="projects">
+            <img>
+            <p>SAITC - Vicepresident</p>
+            <p>I'm a part of the student board that manages events 
+              for students in my major.</p>
+          </div>
+          <br>
+          <div class="projects">
+            <img>
+            <p>Tinta Regia</p>
+            <p>I lead a student group dedicated to creative writing in my campus.</p>
+          </div>
+          <br>
+          <div class="projects">
+            <img>
+            <p>MAE</p>
+            <p>I'm a part of a student group called MAE, 
+              we give free tutoring to other students in our campus.</p>
+          </div>
+        </div>
+        <p>Click here to get a random fact:</p>
+        <!-- This shows a random fact about myself -->
+        <button onclick="addRandomFact()">Go!</button>
+        <div id="fact-container">
+        </div>
+        <h4>Comments:</h4>
+        <!-- Shows messages in DataServlet -->
+        <div id="comments"></div>
+        <!-- Updates the number of comments displayed -->
+        <form id="number-form" action="/data" method="POST">
+          <input type="number" name="input-number" min="0" max="10" step="1" value="3" onchange="this.form.submit()">
+        </form>
+        <!-- Deletes all comments and reloads the page -->
+        <button onclick="deleteAllComments()" id="delete-button">Delete all comments</button>
+        <h5 id="add">Add Comment</h5>
+        <div id="login"></div>
+        <br></br>
+        <!-- Submits new comments to the servlet -->
+        <form id="comment-form" action="/data" method="POST">
+          <input type="text" name="username" placeholder="Name?" value="Guest">
+          <br></br>
+          <textarea name="new-comment" placeholder="Say hi!" rows="4" cols="50"></textarea>
+          <br></br>
+          <input type="submit">
+        </form>
+        </div>
     </div>
   </body>
 </html>

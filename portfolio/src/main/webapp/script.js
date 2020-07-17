@@ -11,18 +11,95 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+/**
+ * Adds a random fact to the page.
+ * This is just a modification from random greeting
+ */
+function addRandomFact() {
+  const facts = [
+    'I joined Google during the Covid crisis',
+    'Most people call me Sofi!',
+    'My favorite non fiction book is The Code Book, by Simon Singh',
+    'I\'m 1.5 meters tall.',
+    'I have two younger brothers',
+  ];
+  const fact = facts[Math.floor(Math.random() * facts.length)];
+  const factContainer = document.getElementById('fact-container');
+  factContainer.innerText = fact;
+}
+
+/** Calls for DeleteCommentsServer, then reloads the window */
+function deleteAllComments() {
+  fetch('/delete-data', {method: 'POST'} ).then(window.location.reload());
+}
+
+/** Adds all comments and usernames to the 'comments' division. */
+function getCommentsJson() {
+  fetch('/data').then(response => response.json()).then((comment) => {
+    const containerElement=document.getElementById('comments');
+    let i;
+    for (i=0; i<comment.length; i++) {
+      containerElement.appendChild(createSpanElement(comment[i][0]));
+      containerElement.appendChild(createParagraphElement(comment[i][1]));
+    }
+  });
+}
 
 /**
- * Adds a random greeting to the page.
+ * Creates a new paragraph element in document
+ * @param {string} text Inner text for the new element
+ * @return {pElement} The new <p> element
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function createParagraphElement(text) {
+  const pElement = document.createElement('P');
+  pElement.innerText = text;
+  return pElement;
+}
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+/**
+ * Creates a new span element in document
+ * @param {string} text Inner text for the new element
+ * @return {spanElement} The new <span> element
+ */
+function createSpanElement(text) {
+  const spanElement = document.createElement('span');
+  spanElement.innerText = text;
+  return spanElement;
+}
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+/** Fetches Json with the login/logout URL*/
+function getLoginJson() {
+  fetch('/login').then(response => response.json()).then((logJson) => {
+    createLogButton(logJson);
+  });
+}
+
+/**
+ * Creates login/logout button, hides comment-form if user is logged out
+ * @param {json} logJson Json fetched from LoginServlet
+ */
+function createLogButton(logJson) {
+  const containerElement = document.getElementById('login');
+  const commentForm = document.getElementById('comment-form');
+  const loginlink = document.createElement('a');
+  const add = document.getElementById('add');
+
+  if (logJson.logged == 'out') {
+    commentForm.style.display = 'none';
+    loginlink.innerText = 'Click here to log in';
+    add.innerText = 'Log in to add a comment!';
+  } else {
+    commentForm.style.display = 'block';
+    loginlink.innerText = 'Click here to log out';
+  }
+
+  loginlink.id = 'login-button';
+  loginlink.href = logJson.url;
+  containerElement.appendChild(loginlink);
+}
+
+/** Gets latest comments and login/logout button when index.html loads*/
+function start() {
+  getCommentsJson();
+  getLoginJson();
 }

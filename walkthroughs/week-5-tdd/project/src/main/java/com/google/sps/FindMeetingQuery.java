@@ -31,23 +31,21 @@ public final class FindMeetingQuery {
     }else{
       return inclusiveResult;
     }
-    
   }
+  /** Considers only mandatory attendees */
   private Collection<TimeRange> queryMandatory(Collection<Event> events, MeetingRequest request) {
     Collection<TimeRange> result = new ArrayList<TimeRange>();
     boolean includeEvent;
     boolean noEventsYet = true;
-    //Edgecase for too long of a meeting (takes more than a day)
+    int lastTime = 0; // Ending time for the last event with mandatory attendees
+
+    // Edgecase for too long of a meeting (takes more than a day)
     if (request.getDuration() > TimeRange.getTimeInMinutes(23, 59)) {
       return result;
     }
-    //Initialization for lastEvent (used to compare with other events)
-    Event lastEvent = new Event("Not an event",
-    TimeRange.fromStartDuration(0, 30), Arrays.asList("Me"));
-    int lastTime;
     for (Event event : events) {
       includeEvent = false;
-      //Check if current event needs to be considered
+      // Check if current event needs to be considered
       for (String attendee : request.getAttendees()) {
         if (event.getAttendees().contains(attendee)) {
           includeEvent = true;
@@ -55,52 +53,42 @@ public final class FindMeetingQuery {
         }
       }
       if (includeEvent) {
-        if (noEventsYet) {
-          //Different case for the first event
-          if (event.getWhen().start() >= request.getDuration()) {
-            result.add(TimeRange.fromStartEnd(0, event.getWhen().start(), false));
-          }
-          noEventsYet = false;
-          lastEvent = event;
-        } else {
-          //lastTime is the ending time of the last event
-          lastTime = (int) lastEvent.getWhen().start() + lastEvent.getWhen().duration();
-          if(event.getWhen().start()-lastTime >= request.getDuration()){
-            result.add(TimeRange.fromStartEnd(lastTime, event.getWhen().start(), false));
-          }
-          //last event is determined by the end time, not the start time
-          if ((int) event.getWhen().start()+event.getWhen().duration() > lastTime) {
-            lastEvent = event;
-          }
+        noEventsYet = false;
+        // lastTime is the ending time of the last event
+        if(event.getWhen().start() - lastTime >= request.getDuration()){
+          result.add(TimeRange.fromStartEnd(lastTime, event.getWhen().start(), false));
+        }
+        // Updating lastTime is determined by the latest end time, not the latest start time
+        if ((int) event.getWhen().start() + event.getWhen().duration() > lastTime) {
+          lastTime = (int) event.getWhen().start() + event.getWhen().duration();
         }
       }
     }
-    //If there were no events or no events with the requested attendees
+    // If there were no events or no events with the requested attendees
     if (noEventsYet) {
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
-    lastTime = (int) lastEvent.getWhen().start() + lastEvent.getWhen().duration();
-    //Time range after the last event of the day
-    if (TimeRange.END_OF_DAY-lastTime>=request.getDuration()) {
+    // Time range after the last event of the day
+    if (TimeRange.END_OF_DAY - lastTime >= request.getDuration()) {
       result.add(TimeRange.fromStartEnd(lastTime, TimeRange.END_OF_DAY, true));
     }
     return result;
   }
+
+  /** Considers all attendees as mandatory */
   private Collection<TimeRange> queryAllAttendees(Collection<Event> events, MeetingRequest request) {
     Collection<TimeRange> result = new ArrayList<TimeRange>();
     boolean includeEvent;
     boolean noEventsYet = true;
-    //Edgecase for too long of a meeting (takes more than a day)
+    int lastTime = 0; // Ending time for the last event with mandatory attendees
+
+    // Edgecase for too long of a meeting (takes more than a day)
     if (request.getDuration() > TimeRange.getTimeInMinutes(23, 59)) {
       return result;
     }
-    //Initialization for lastEvent (used to compare with other events)
-    Event lastEvent = new Event("Not an event",
-    TimeRange.fromStartDuration(0, 30), Arrays.asList("Me"));
-    int lastTime;
     for (Event event : events) {
       includeEvent = false;
-      //Check if current event needs to be considered
+      // Check if current event needs to be considered
       for (String attendee : request.getAttendees()) {
         if (event.getAttendees().contains(attendee)) {
           includeEvent = true;
@@ -114,34 +102,23 @@ public final class FindMeetingQuery {
         }
       }
       if (includeEvent) {
-        //print here
-        if (noEventsYet) {
-          //Different case for the first event
-          if (event.getWhen().start() >= request.getDuration()) {
-            result.add(TimeRange.fromStartEnd(0, event.getWhen().start(), false));
-          }
-          noEventsYet = false;
-          lastEvent = event;
-        } else {
-          //lastTime is the ending time of the last event
-          lastTime = (int) lastEvent.getWhen().start() + lastEvent.getWhen().duration();
-          if(event.getWhen().start()-lastTime >= request.getDuration()){
-            result.add(TimeRange.fromStartEnd(lastTime, event.getWhen().start(), false));
-          }
-          //last event is determined by the end time, not the start time
-          if ((int) event.getWhen().start()+event.getWhen().duration() > lastTime) {
-            lastEvent = event;
-          }
+        noEventsYet = false;
+        // lastTime is the ending time of the last event
+        if(event.getWhen().start() - lastTime >= request.getDuration()){
+          result.add(TimeRange.fromStartEnd(lastTime, event.getWhen().start(), false));
+        }
+        // Updating lastTime is determined by the latest end time, not the latest start time
+        if ((int) event.getWhen().start() + event.getWhen().duration() > lastTime) {
+          lastTime = (int) event.getWhen().start() + event.getWhen().duration();
         }
       }
     }
-    //If there were no events or no events with the requested attendees
+    // If there were no events or no events with the requested attendees
     if (noEventsYet) {
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
-    lastTime = (int) lastEvent.getWhen().start() + lastEvent.getWhen().duration();
-    //Time range after the last event of the day
-    if (TimeRange.END_OF_DAY-lastTime>=request.getDuration()) {
+    // Time range after the last event of the day
+    if (TimeRange.END_OF_DAY - lastTime >= request.getDuration()) {
       result.add(TimeRange.fromStartEnd(lastTime, TimeRange.END_OF_DAY, true));
     }
     return result;

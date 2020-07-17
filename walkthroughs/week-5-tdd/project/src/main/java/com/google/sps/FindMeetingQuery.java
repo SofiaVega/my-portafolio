@@ -19,21 +19,27 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-/** Returns a collection of time ranges in which the meeting could fit */
+/** 
+ * Returns a collection of time ranges in which the meeting could fit 
+ * Time complexity is O(m*n^2) in which m is the number of Events and n is the number of Attendees
+ * This is because we use .contains() for every attendee in every event, and this method is O(n)
+*/
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    Collection<TimeRange> result = new ArrayList<TimeRange>();
-    Collection<TimeRange> inclusiveResult = new ArrayList<TimeRange>();
-    result = queryMandatory(events, request);
-    inclusiveResult = queryAllAttendees(events, request);
-    if(inclusiveResult.isEmpty()){
-      return result;
+    Collection<TimeRange> onlyMandatoryOptions = new ArrayList<TimeRange>();
+    Collection<TimeRange> allAttendeesOptions = new ArrayList<TimeRange>();
+    onlyMandatoryOptions = queryOnlyMandatoryAttendees(events, request);
+    allAttendeesOptions = queryAllAttendees(events, request);
+    //Inclusive result considers all attendees as mandatory
+    if(allAttendeesOptions.isEmpty()){
+      return onlyMandatoryOptions;
     }else{
-      return inclusiveResult;
+    //If we have one or more available slots for everyone to meet we return inclusiveResult
+      return allAttendeesOptions;
     }
   }
-  /** Considers only mandatory attendees */
-  private Collection<TimeRange> queryMandatory(Collection<Event> events, MeetingRequest request) {
+  // Considers only mandatory attendees
+  private Collection<TimeRange> queryOnlyMandatoryAttendees(Collection<Event> events, MeetingRequest request) {
     Collection<TimeRange> result = new ArrayList<TimeRange>();
     boolean includeEvent;
     boolean noEventsYet = true;
@@ -75,7 +81,7 @@ public final class FindMeetingQuery {
     return result;
   }
 
-  /** Considers all attendees as mandatory */
+  // Considers all attendees as mandatory
   private Collection<TimeRange> queryAllAttendees(Collection<Event> events, MeetingRequest request) {
     Collection<TimeRange> result = new ArrayList<TimeRange>();
     boolean includeEvent;
@@ -95,10 +101,12 @@ public final class FindMeetingQuery {
           break;
         }
       }
-      for (String attendee : request.getOptionalAttendees()) {
-        if (event.getAttendees().contains(attendee)) {
-          includeEvent = true;
-          break;
+      if(!includeEvent){
+        for (String attendee : request.getOptionalAttendees()) {
+          if (event.getAttendees().contains(attendee)) {
+            includeEvent = true;
+            break;
+          }
         }
       }
       if (includeEvent) {

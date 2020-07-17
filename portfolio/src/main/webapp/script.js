@@ -126,7 +126,7 @@ function initMap() {
 /**
  * Creates a new marker in the map and stores it in the servlet
  * @param {number} lat Latitude of the marker
- * @param {number} lng Longitud of the marker
+ * @param {number} lng Longitude of the marker
  */
 function createMarker(lat, lng) {
   editMarker = new google.maps.Marker( {position: {lat: lat, lng: lng}, map: map});
@@ -136,7 +136,7 @@ function createMarker(lat, lng) {
 /**
  * Sends a post request to the MarkerServlet to store the new marker
  * @param {number} lat Latitude of the marker
- * @param {number} lng Longitud of the marker
+ * @param {number} lng Longitude of the marker
  */
 function postMarker(lat, lng) {
   const params = new URLSearchParams();

@@ -79,6 +79,16 @@ public class DataServlet extends HttpServlet {
     return json;
   }
 
+  /** 
+   * Builds a json string with an array of comments
+   * Example:
+   * { 
+   *  "array": [ 
+   *    { "username": "Guest", "text": "First comment", "email": "test@example.com" }, 
+   *    { "username": "Guest", "text": "Second comment", "email": "test@example.com" }
+   *  ] 
+   * }
+   */
   private String finalJson(ArrayList<String> comments){
     String json;
     json = "{ \"array\": [ ";
@@ -92,6 +102,13 @@ public class DataServlet extends HttpServlet {
     return json;
   }
 
+  /**
+   * Build a json string from a comment Entity
+   * Example:
+   * { "username": "Guest", "text": "First Comment", "email": "test@example.com" }
+   * @param comment
+   * @return
+   */
   private String convertCommentToJson(Entity comment){
     String json;
     json = "{ \"username\": \"";

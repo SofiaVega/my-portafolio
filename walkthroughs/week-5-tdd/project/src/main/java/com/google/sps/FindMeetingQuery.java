@@ -14,10 +14,121 @@
 
 package com.google.sps;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+/** 
+ * Returns a collection of time ranges in which the meeting could fit 
+ * Time complexity is O(m*n^2) in which m is the number of Events and n is the number of Attendees
+ * This is because we use .contains() for every attendee in every event, and this method is O(n)
+*/
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    Collection<TimeRange> onlyMandatoryOptions = new ArrayList<TimeRange>();
+    Collection<TimeRange> allAttendeesOptions = new ArrayList<TimeRange>();
+    onlyMandatoryOptions = queryOnlyMandatoryAttendees(events, request);
+    allAttendeesOptions = queryAllAttendees(events, request);
+    //Inclusive result considers all attendees as mandatory
+    if(allAttendeesOptions.isEmpty()){
+      return onlyMandatoryOptions;
+    }else{
+    //If we have one or more available slots for everyone to meet we return inclusiveResult
+      return allAttendeesOptions;
+    }
+  }
+  // Considers only mandatory attendees
+  private Collection<TimeRange> queryOnlyMandatoryAttendees(Collection<Event> events, MeetingRequest request) {
+    Collection<TimeRange> result = new ArrayList<TimeRange>();
+    boolean includeEvent;
+    boolean noEventsYet = true;
+    int lastTime = 0; // Ending time for the last event with mandatory attendees
+
+    // Edgecase for too long of a meeting (takes more than a day)
+    if (request.getDuration() > TimeRange.getTimeInMinutes(23, 59)) {
+      return result;
+    }
+    for (Event event : events) {
+      includeEvent = false;
+      // Check if current event needs to be considered
+      for (String attendee : request.getAttendees()) {
+        if (event.getAttendees().contains(attendee)) {
+          includeEvent = true;
+          break;
+        }
+      }
+      if (includeEvent) {
+        noEventsYet = false;
+        // lastTime is the ending time of the last event
+        if(event.getWhen().start() - lastTime >= request.getDuration()){
+          result.add(TimeRange.fromStartEnd(lastTime, event.getWhen().start(), false));
+        }
+        // Updating lastTime is determined by the latest end time, not the latest start time
+        if ((int) event.getWhen().start() + event.getWhen().duration() > lastTime) {
+          lastTime = (int) event.getWhen().start() + event.getWhen().duration();
+        }
+      }
+    }
+    // If there were no events or no events with the requested attendees
+    if (noEventsYet) {
+      return Arrays.asList(TimeRange.WHOLE_DAY);
+    }
+    // Time range after the last event of the day
+    if (TimeRange.END_OF_DAY - lastTime >= request.getDuration()) {
+      result.add(TimeRange.fromStartEnd(lastTime, TimeRange.END_OF_DAY, true));
+    }
+    return result;
+  }
+
+  // Considers all attendees as mandatory
+  private Collection<TimeRange> queryAllAttendees(Collection<Event> events, MeetingRequest request) {
+    Collection<TimeRange> result = new ArrayList<TimeRange>();
+    boolean includeEvent;
+    boolean noEventsYet = true;
+    int lastTime = 0; // Ending time for the last event with mandatory attendees
+
+    // Edgecase for too long of a meeting (takes more than a day)
+    if (request.getDuration() > TimeRange.getTimeInMinutes(23, 59)) {
+      return result;
+    }
+    for (Event event : events) {
+      includeEvent = false;
+      // Check if current event needs to be considered
+      for (String attendee : request.getAttendees()) {
+        if (event.getAttendees().contains(attendee)) {
+          includeEvent = true;
+          break;
+        }
+      }
+      if(!includeEvent){
+        for (String attendee : request.getOptionalAttendees()) {
+          if (event.getAttendees().contains(attendee)) {
+            includeEvent = true;
+            break;
+          }
+        }
+      }
+      if (includeEvent) {
+        noEventsYet = false;
+        // lastTime is the ending time of the last event
+        if(event.getWhen().start() - lastTime >= request.getDuration()){
+          result.add(TimeRange.fromStartEnd(lastTime, event.getWhen().start(), false));
+        }
+        // Updating lastTime is determined by the latest end time, not the latest start time
+        if ((int) event.getWhen().start() + event.getWhen().duration() > lastTime) {
+          lastTime = (int) event.getWhen().start() + event.getWhen().duration();
+        }
+      }
+    }
+    // If there were no events or no events with the requested attendees
+    if (noEventsYet) {
+      return Arrays.asList(TimeRange.WHOLE_DAY);
+    }
+    // Time range after the last event of the day
+    if (TimeRange.END_OF_DAY - lastTime >= request.getDuration()) {
+      result.add(TimeRange.fromStartEnd(lastTime, TimeRange.END_OF_DAY, true));
+    }
+    return result;
   }
 }

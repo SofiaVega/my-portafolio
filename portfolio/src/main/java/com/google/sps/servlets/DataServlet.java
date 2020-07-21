@@ -94,7 +94,7 @@ public class DataServlet extends HttpServlet {
     json = "{ \"array\": [ ";
     for (int i=0; i< comments.size(); i++){
       json += comments.get(i);
-      if(i<comments.size()-1){
+      if(i < comments.size()-1){
         json += ", ";
       }
     }
@@ -102,32 +102,10 @@ public class DataServlet extends HttpServlet {
     return json;
   }
 
-  /**
-   * Build a json string from a comment Entity
-   * Example:
-   * { "username": "Guest", "text": "First Comment", "email": "test@example.com" }
-   * @param comment
-   * @return
-   */
-  private String convertCommentToJson(Entity comment){
-    String json;
-    json = "{ \"username\": \"";
-    json += comment.getProperty("username");
-    json += "\", \"text\": \"";
-    json += comment.getProperty("text");
-    json += "\", \"email\": \"";
-    json += comment.getProperty("email");
-    json += "\" }";
-    return json;
-  }
-
   /** Creates and stores new comment entities */
   private void storeComment(String username, String text, String email){
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("username", username);
-    commentEntity.setProperty("text", text);
-    commentEntity.setProperty("timestamp", System.currentTimeMillis());
-    commentEntity.setProperty("email", email);
+    Comment comment = new Comment(text, username, email);
+    Entity commentEntity = comment.getEntity();
     datastore.put(commentEntity);
   }
 
@@ -137,11 +115,12 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments = new ArrayList<String>();
     Iterable<Entity> commentsIterable = results.asIterable(FetchOptions.Builder.withLimit(numComments));
+    String json;
     for(Entity comment : commentsIterable){
-      String json = convertCommentToJson(comment);
+      Comment newComment = new Comment(comment);
+      json = newComment.getJson();
       comments.add(json);
     }
     return comments;
   }
-
 }

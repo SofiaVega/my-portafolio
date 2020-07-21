@@ -6,8 +6,11 @@
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChl_PU1cWjf7cKYDpTvrZvg1jxD5tsTnA&callback=initMap">
+    </script>
   </head>
-  <!-- start() function calls for getCommentsJSon() and getLoginJson() -->
+  <!-- start() function calls for getCommentsJSon(), getLoginJson() and initMap() -->
   <body onload="start()">
     <div id="content">
       <div>
@@ -134,6 +137,11 @@
           <input type="submit">
         </form>
         </div>
+        <br></br>
+        <h3>Visitors</h3>
+        <p>Add a marker for your hometown and see where other visitors are from :)</p>
+        <div id="map"></div>
+        <br></br>
     </div>
   </body>
 </html>

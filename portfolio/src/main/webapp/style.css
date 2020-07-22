@@ -142,3 +142,13 @@ input:hover button:hover {
 #map {
   height: 600px;
 }
+
+#credits a {
+  color: gray;
+}
+
+#credits {
+  border-left: solid lightgray;
+  margin-bottom: 20px;
+  padding-left: 40px;
+}

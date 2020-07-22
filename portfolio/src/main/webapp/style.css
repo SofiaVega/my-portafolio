@@ -59,24 +59,24 @@ h1 {
 }
 
 /* Removes underscore between icons*/
-a{
+a {
   text-decoration: none;
 }
 
 /* Styles both buttons */
-button{
+button {
   background-color: lightskyblue;
   border: none;
   color: white;
   padding: 15px;
 }
 
-#comments{
+#comments {
   color: gray;
   padding: 20px;
 }
 
-textarea{
+textarea {
   border-color: gray;
   outline: none;
   width: 50em;
@@ -100,7 +100,7 @@ input[type='text'] {
   width: 50em;
 }
 
-input[type='number']{
+input[type='number'] {
   padding: 13px;
 }
 
@@ -117,7 +117,7 @@ input:hover button:hover {
   padding: 15px;
 }
 
-#comments span{
+#comments span {
   margin-top: 15px;
   padding-bottom: 0px;
 }
@@ -131,7 +131,7 @@ input:hover button:hover {
 }
 
 /* Styles <a> login/logout element to look like a button */
-#login-button{
+#login-button {
   background-color: lightskyblue;
   border: none;
   color: white;

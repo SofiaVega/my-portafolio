@@ -59,21 +59,21 @@
           <!-- Three of my favorite projects. -->
           <!-- TODO(sofiavega): Add icon on img tag -->
           <div class="projects">
-            <img>
+            <img src = "images/icons8-green-earth-96.png" alt="Earth icon">
             <p>Green for Earth</p>
             <p>A website that calculates the user's carbon footprint, 
               developed for HackMTY 2019.</p>
           </div>
           <br>
           <div class="projects">
-            <img>
+            <img src = "images/icons8-virus-100.png" alt="Virus icon">
             <p>COVID-19 Database</p>
             <p>A school team project where we designed a database 
               meant to help hospitals manage their COVID-19 patients' data</p>
           </div>
           <br>
           <div class="projects">
-            <img>
+            <img src = "images/icons8-look-100.png" alt="Magnifying glass icon">
             <p>Bacteria Visual Processing with Python</p>
             <p>A team project where we analyzed and predicted 
               bacterial growth through image processing in Python.</p>
@@ -92,23 +92,25 @@
           <!-- This div contains my student group projects -->
           <!-- TODO(sofiavega): Add icon on img tag -->
           <div class="projects">
-            <img>
+            <img src = "images/saitc-logo.jpg" alt="SAITC logo">
             <p>SAITC - Vicepresident</p>
             <p>I'm a part of the student board that manages events 
               for students in my major.</p>
           </div>
           <br>
           <div class="projects">
-            <img>
+            <img src = "images/tinta-regia-logo.png" alt = "Tinta Regia logo">
             <p>Tinta Regia</p>
             <p>I lead a student group dedicated to creative writing in my campus.</p>
           </div>
           <br>
           <div class="projects">
-            <img>
-            <p>MAE</p>
-            <p>I'm a part of a student group called MAE, 
+            <img src = "images/maes-logo.jpg" alt = "MAEs logo">
+            <div>
+              <p>MAE</p>
+              <p>I'm a part of a student group called MAE, 
               we give free tutoring to other students in our campus.</p>
+            </div>
           </div>
         </div>
         <p>Click here to get a random fact:</p>
@@ -116,7 +118,7 @@
         <button onclick="addRandomFact()">Go!</button>
         <div id="fact-container">
         </div>
-        <h4>Comments:</h4>
+        <h1>Comments</h1>
         <!-- Shows messages in DataServlet -->
         <div id="comments"></div>
         <!-- Updates the number of comments displayed -->
@@ -125,7 +127,7 @@
         </form>
         <!-- Deletes all comments and reloads the page -->
         <button onclick="deleteAllComments()" id="delete-button">Delete all comments</button>
-        <h5 id="add">Add Comment</h5>
+        <h1 id="add">Leave a comment</h1>
         <div id="login"></div>
         <br></br>
         <!-- Submits new comments to the servlet -->
@@ -138,10 +140,18 @@
         </form>
         </div>
         <br></br>
-        <h3>Visitors</h3>
+        <h1>Visitors</h1>
         <p>Add a marker for your hometown and see where other visitors are from :)</p>
         <div id="map"></div>
         <br></br>
+        <div id>
+          <p>Credits for icons used:</p>
+          <a target="_blank" href="https://icons8.com/icons/set/green-earth">Green Earth icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+          <br>
+          <a target="_blank" href="https://icons8.com/icons/set/virus">Virus icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+          <br>
+          <a target="_blank" href="https://icons8.com/icons/set/look">Look icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+        </div>
     </div>
   </body>
 </html>

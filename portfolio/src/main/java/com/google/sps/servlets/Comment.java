@@ -1,4 +1,4 @@
-package com.google.sps;
+package com.google.sps.servlets;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -21,10 +21,10 @@ public class Comment {
      * @param commentEntity
      */
     public Comment(Entity commentEntity){
-        text = commentEntity.getProperty("text");
-        username = commentEntity.getProperty("username");
-        email = commentEntity.getProperty("email");
-        timestamp = commentEntity.getProperty("timestamp");
+        text = (String) commentEntity.getProperty("text");
+        username = (String) commentEntity.getProperty("username");
+        email = (String) commentEntity.getProperty("email");
+        timestamp = (long) commentEntity.getProperty("timestamp");
     }
     /** Returns a new entity of type 'Comment' */
     public Entity getEntity(){
@@ -38,7 +38,8 @@ public class Comment {
     /**
     * Build a json string from a comment
     * Example:
-    * { "username": "Guest", "text": "First Comment", "email": "test@example.com" }
+    * { "username": "Guest", "text": "First Comment", 
+    *   "email": "test@example.com" }
     * @return json
     */
     public String getJson(){

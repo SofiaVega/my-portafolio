@@ -30,8 +30,8 @@ span {
 /* Set size for icons */
 img {
   height: 32px;
-  margin: 15px;
   width: 32px;
+  margin-right: 50px;
 }
 
 /* Crops first image into a circle */
@@ -41,6 +41,7 @@ img {
   overflow: hidden;
   position: relative;
   width: 200px;
+  margin-bottom: 20px;
 }
 
 /* 
@@ -58,24 +59,24 @@ h1 {
 }
 
 /* Removes underscore between icons*/
-a{
+a {
   text-decoration: none;
 }
 
 /* Styles both buttons */
-button{
+button {
   background-color: lightskyblue;
   border: none;
   color: white;
   padding: 15px;
 }
 
-#comments{
+#comments {
   color: gray;
   padding: 20px;
 }
 
-textarea{
+textarea {
   border-color: gray;
   outline: none;
   width: 50em;
@@ -99,7 +100,7 @@ input[type='text'] {
   width: 50em;
 }
 
-input[type='number']{
+input[type='number'] {
   padding: 13px;
 }
 
@@ -116,7 +117,7 @@ input:hover button:hover {
   padding: 15px;
 }
 
-#comments span{
+#comments span {
   margin-top: 15px;
   padding-bottom: 0px;
 }
@@ -130,7 +131,7 @@ input:hover button:hover {
 }
 
 /* Styles <a> login/logout element to look like a button */
-#login-button{
+#login-button {
   background-color: lightskyblue;
   border: none;
   color: white;
@@ -140,4 +141,14 @@ input:hover button:hover {
 
 #map {
   height: 600px;
+}
+
+#credits a {
+  color: gray;
+}
+
+#credits {
+  border-left: solid lightgray;
+  margin-bottom: 20px;
+  padding-left: 40px;
 }
